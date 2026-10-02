@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sur les épaules de Darwin — catalogue</title>
+  <meta name="description" content="Explorer, trier et rechercher les émissions de Sur les épaules de Darwin (Jean Claude Ameisen, France Inter, 2010–2022).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/minisearch@7.2.0/dist/umd/index.js"
+          integrity="sha384-KuHy7eg9MqWBVrMXJC0WN6q4d3+KBquZ3Htgex79A4REptrDvGOXfAgZ0VOJ1Mdx"
+          crossorigin="anonymous" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-text">
+      <p class="kicker">Catalogue des émissions</p>
+      <h1>Sur les épaules de Darwin</h1>
+      <p class="sub">Jean Claude Ameisen · France Inter · 2010 – 2022 · <span id="total"></span></p>
+    </div>
+  </header>
+
+  <form id="controls" role="search" onsubmit="return false">
+    <input id="q" type="search" placeholder="Rechercher : titre, intro, sujets, livres, articles, chansons…" autocomplete="off" aria-label="Recherche plein texte">
+    <div class="filters">
+      <select id="series" aria-label="Série"><option value="">Toutes les séries</option><option value="*">En série uniquement</option><option value="-">Hors série uniquement</option></select>
+      <select id="year" aria-label="Année"><option value="">Toutes les années</option></select>
+      <select id="theme" aria-label="Thème"><option value="">Tous les thèmes</option></select>
+      <select id="reruns" aria-label="Rediffusions">
+        <option value="">Rediffusions : toutes</option>
+        <option value="1">Rediffusées ≥ 1 fois</option>
+        <option value="2">Rediffusées ≥ 2 fois</option>
+        <option value="3">Rediffusées ≥ 3 fois</option>
+        <option value="4">Rediffusées ≥ 4 fois</option>
+      </select>
+      <button id="reset" type="button">Réinitialiser</button>
+    </div>
+  </form>
+
+  <p id="count" aria-live="polite"></p>
+
+  <main>
+    <table id="table">
+      <thead>
+        <tr>
+          <th data-sort="id" class="num">N°</th>
+          <th data-sort="title">Titre</th>
+          <th data-sort="series">Série</th>
+          <th data-sort="firstBroadcast">Date</th>
+          <th data-sort="durationSeconds" class="num">Durée</th>
+          <th data-sort="rerunCount" class="num center" title="Nombre de rediffusions">Rediff.</th>
+          <th>Sujets</th>
+        </tr>
+      </thead>
+      <tbody id="rows"><tr><td colspan="7">Chargement…</td></tr></tbody>
+    </table>
+  </main>
+
+  <footer>
+    Données : <a href="https://www.radiofrance.fr/franceinter/podcasts/sur-les-epaules-de-darwin">radiofrance.fr</a>,
+    extraites le <span id="generated"></span>. Site non officiel.
+  </footer>
+</body>
+</html>

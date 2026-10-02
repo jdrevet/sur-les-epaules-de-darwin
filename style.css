@@ -1,0 +1,241 @@
+:root {
+  /* Inspiré de la page du podcast sur radiofrance.fr : bleu nuit, lavande, cartes arrondies,
+     avec le rouge framboise du visuel de l'émission comme accent. */
+  --bg: #f7f6fa;
+  --card: #ecebf3;
+  --raised: #ffffff;
+  --fg: #1f1d33;
+  --muted: #625f78;
+  --line: #dcdae7;
+  --hover: #e2e0ed;
+  --navy: #1f1c33;
+  --on-navy: #ffffff;
+  --accent: #c1123f;
+  --chip: #ffffff;
+  --r1: #f6d3da;
+  --r2: #ec95a7;
+  --r3: #d8284d;
+  --radius: 18px;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131124;
+    --card: #1d1a31;
+    --raised: #27243e;
+    --fg: #ecebf5;
+    --muted: #a19eb8;
+    --line: #2f2c46;
+    --hover: #252239;
+    --navy: #ecebf5;
+    --on-navy: #1f1c33;
+    --accent: #f2718c;
+    --chip: #2c2944;
+    --r1: #4f2439;
+    --r2: #86304a;
+    --r3: #d8284d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  max-width: 1400px;
+  padding: 0 16px 48px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.45 Figtree, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+a { color: var(--accent); }
+
+/* ---------- bandeau ---------- */
+
+.hero {
+  position: relative;
+  margin: 16px 0 0;
+  min-height: 210px;
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: #fff;
+  /* Le visuel de l'émission à droite, fondu dans le bleu nuit à gauche.
+     Si l'image disparaît un jour, il reste le dégradé. */
+  background:
+    linear-gradient(90deg, #1f1c33 0%, #1f1c33 32%, rgba(31, 28, 51, 0.55) 55%, rgba(31, 28, 51, 0) 80%),
+    url("https://www.radiofrance.fr/pikapi/images/0793c6db-2de8-48b3-aca8-59fb05986b04/2048") 70% 30% / cover no-repeat,
+    #1f1c33;
+}
+.hero-text { position: relative; padding: 28px 32px; max-width: 640px; }
+.kicker {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--r3);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+h1 { margin: 0; font-size: 2.3rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
+.sub { margin: 8px 0 0; color: rgba(255, 255, 255, 0.8); }
+
+/* ---------- recherche et filtres ---------- */
+
+#controls {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 16px 0 12px;
+  background: var(--bg);
+}
+
+#q, select, button {
+  font: inherit;
+  color: inherit;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+#q { width: 100%; padding: 11px 18px; font-size: 1.05rem; }
+#q:focus, select:focus, button:focus-visible, tr.ep:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.filters select, .filters button { padding: 6px 12px; max-width: 100%; font-weight: 500; }
+#series { width: 18em; }
+#reset {
+  cursor: pointer;
+  background: var(--navy);
+  color: var(--on-navy);
+  border-color: var(--navy);
+}
+
+#count { margin: 4px 4px 10px; color: var(--muted); font-size: 0.9rem; font-weight: 500; }
+
+/* ---------- tableau ---------- */
+
+main {
+  overflow-x: auto;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 6px 12px 12px;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--muted);
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  user-select: none;
+}
+th[data-sort] { cursor: pointer; }
+th[data-sort]:hover { color: var(--fg); }
+th[aria-sort="ascending"]::after { content: " ↑"; }
+th[aria-sort="descending"]::after { content: " ↓"; }
+th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--accent); }
+
+td { padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 0; }
+.num { text-align: right; white-space: nowrap; }
+.num.center { text-align: center; }
+.muted { color: var(--muted); }
+.empty { text-align: center; padding: 32px; color: var(--muted); }
+
+tr.ep { cursor: pointer; }
+tr.ep:hover td { background: var(--hover); }
+tr.ep:hover td:first-child, tr.ep.open td:first-child { border-radius: 12px 0 0 12px; }
+tr.ep:hover td:last-child, tr.ep.open td:last-child { border-radius: 0 12px 12px 0; }
+tr.ep.open td { background: var(--raised); border-bottom-color: transparent; }
+tr.ep.open td:first-child { border-bottom-left-radius: 0; }
+tr.ep.open td:last-child { border-bottom-right-radius: 0; }
+
+td.title { font-weight: 600; min-width: 16em; }
+td.date { white-space: nowrap; }
+td.series { min-width: 9em; max-width: 16em; }
+
+.reruns {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 0 6px;
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 700;
+}
+.reruns.r1 { background: var(--r1); }
+.reruns.r2 { background: var(--r2); }
+.reruns.r3 { background: var(--r3); color: #fff; }
+
+button.link {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--accent);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+button.link:hover { text-decoration: underline; }
+
+td.topics { min-width: 14em; }
+.chip {
+  display: inline-block;
+  margin: 0 4px 4px 0;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  background: var(--chip);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.chip:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- détail ---------- */
+
+tr.detail > td { background: var(--raised); padding: 4px 20px 24px; border-radius: 0 0 12px 12px; }
+.detail-body { max-width: 900px; }
+.player { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 6px 0 4px; }
+.player audio { width: min(100%, 420px); }
+.actions { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.actions a {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--on-navy);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.actions a + a { background: none; color: var(--fg); border: 1px solid var(--line); }
+.actions a:hover { opacity: 0.85; }
+.teaser { font-style: italic; color: var(--muted); }
+.standfirst { font-weight: 600; }
+.intro a { overflow-wrap: anywhere; }
+.intro { white-space: pre-line; font-size: 1.02rem; line-height: 1.6; }
+.refs h3 { margin: 18px 0 4px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+.refs ul { margin: 0; padding-left: 20px; }
+.refs li { margin: 2px 0; overflow-wrap: anywhere; }
+
+footer { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
+
+@media (max-width: 720px) {
+  .hero { min-height: 170px; background-position: 0 0, 80% 30%, 0 0; }
+  .hero-text { padding: 20px; }
+  h1 { font-size: 1.7rem; }
+  main { padding: 4px 6px 8px; }
+  /* Sur mobile, on masque les colonnes secondaires ; tout reste dans le détail. */
+  th:nth-child(1), td:nth-child(1),
+  th:nth-child(3), td:nth-child(3),
+  th:nth-child(7), td:nth-child(7) { display: none; }
+  tr.detail td { display: table-cell !important; }
+  td.title { min-width: 0; }
+}
